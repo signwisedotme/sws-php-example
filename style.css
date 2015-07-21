@@ -1,0 +1,82 @@
+/*
+  Copyright 2015 SignWise Corporation Ltd.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial, sans-serif;
+}
+.card {
+    background: #fffddf;
+    border: 1px solid #ffe257;
+    margin: 10px;
+    width: 350px;
+    display: inline-block;
+    vertical-align: top;
+}
+#form_session {
+    background: #d0f3ff;
+    border: 1px solid #919eff;
+}
+.card h1 {
+    background: #ffe257;
+    border-bottom: 1px solid #ffe257;
+    color: #777777;
+    padding: 8px 10px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: normal;
+}
+#form_session h1 {
+    background: #d0f3ff;
+    border-bottom: 1px solid #919eff;
+}
+label {
+    display: block;
+    margin-bottom: 20px;
+    vertical-align: top;
+}
+label span {
+    display: inline-block;
+    width: 100px;
+}
+.card > div {
+    margin : 10px;
+    font-size: 14px;
+    color: #555555;
+}
+label input, label select, label textarea {
+    width: 210px;
+    vertical-align: top;
+}
+p.note {
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    text-align: right;
+}
+.card > div.result-success, .card > div.result-fail {
+    padding: 5px 10px;
+    color: #ffffff;
+}
+.card > div.result-success {
+    background-color: #00aa00;
+}
+.card > div.result-fail {
+    background-color: #aa0000;
+}
