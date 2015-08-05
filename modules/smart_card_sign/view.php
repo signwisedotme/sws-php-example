@@ -31,13 +31,13 @@
 <script>
   function smartCardSign() {
     console.log(this);
-    function displaySmartCardError(err) {
-      document.getElementById("smart_card_sign_result").innerHTML = err;
+    function displaySmartCardResult(str) {
+      document.getElementById("smart_card_sign_result").innerHTML = str;
     }
     swPlugin.getSignCertificates(function(err, result) {
       if (err) {
         console.log('Error reading signing certificates', err);
-        displaySmartCardError('Error reading signing certificates' + JSON.stringify(err));
+        displaySmartCardResult('Error reading signing certificates' + JSON.stringify(err));
         return;
       }
       console.log('Signing certificates', result);
@@ -45,7 +45,7 @@
       swPlugin.getSupportedHashTypes(function(err, result) {
         if (err) {
           console.log('Error getting supported hash types', err);
-          displaySmartCardError('Error getting supported hash types' + JSON.stringify(err));
+          displaySmartCardResult('Error getting supported hash types' + JSON.stringify(err));
           return;
         }
         var url = 'smart-card-ajax.php?module=smart_card_sign';
@@ -55,16 +55,23 @@
           container: container,
           supportedHashes: result
         };
-        ajaxLoad(url, data, function(err, result) {
+        ajaxLoad(url, data, function(err, result) { // Prepare signing in server
           if (err) {
-            displaySmartCardError('Error preparing signature' + JSON.stringify(err));
+            displaySmartCardResult('Error preparing signature' + JSON.stringify(err));
             return;
           }
-          //{"signatureId":"S0","digest":"a6e71d03c1cc523f6693b5b2daae82cdb7849021751f368a55d6771edcf94782","digestType":"SHA256"}
           swPlugin.sign(result.digest, result.digestType, function(err, result) {
             if (err) {
               console.log('Error signing', err);
-              displaySmartCardError('Error signing' + JSON.stringify(err));
+              ajaxLoad(url, {container: container}, function(err, result) { // Cancel signing in server
+                if (err) {
+                  console.log('Error cancelling signature', err);
+                  displaySmartCardResult('Error cancelling signature' + JSON.stringify(err));
+                  return;
+                }
+                displaySmartCardResult(result.success ? "Cancelled" : "Cancelling failed: " + JSON.stringify(result));
+              });
+              displaySmartCardResult('Error signing' + JSON.stringify(err));
               return;
             }
             console.log('Signing successful', result);
@@ -73,13 +80,13 @@
               container: container,
               signature: result
             };
-            ajaxLoad(url, data, function(err, result) {
+            ajaxLoad(url, data, function(err, result) { // Finalize signing in server
               if (err) {
                 console.log('Error finalizing signature', err);
-                displaySmartCardError('Error finalizing signature' + JSON.stringify(err));
+                displaySmartCardResult('Error finalizing signature' + JSON.stringify(err));
                 return;
               }
-              displaySmartCardError("Successfully signed");
+              displaySmartCardResult(result.container ? "Successfully signed" : "Signing failed: " + JSON.stringify(result));
             });
           });
         });

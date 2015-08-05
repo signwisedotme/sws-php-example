@@ -25,8 +25,15 @@ if (isset($body["certificates"]) && isset($body["container"])) {
   $options = array("supportedHashes" => $body["supportedHashes"]);
   $result = $sw->prepareSignature($body["container"], $body["container"] . ".tmp", $body["certificates"][0], $options);
   echo json_encode($result);
-} elseif (isset($body["signature"])) {
+} elseif (isset($body["signature"]) && isset($body["container"])) {
   // Finalize signature
   $result = $sw->finalizeSignature($body["container"], $body["signature"]);
+  echo json_encode($result);
+} elseif (isset($body["container"])) {
+  // Cancel signing
+  $result = $sw->cancelSigning($body["container"]);
+  if ($result === true) {
+    $result = array("success" => true);
+  }
   echo json_encode($result);
 }
