@@ -20,7 +20,7 @@ session_start();
 
 include "vendor/class.SignWise.php";
 $swConf = array(
-  'server' => 'https://dtm-test.signwise.me/',
+  'server' => 'https://api-test.signwise.org/',
   'certificate' => '../cert/cert.crt',
   'privateKey' => '../cert/private.key',
   'defaultFileProxyUrl' => 'http://www.example.com/example-fileproxy.php?',
